@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if object.image %}
+<img src="{{ object.image.url }}" height="200">
+{% else %}
+<img src="{% static 'music.jpeg' %}" alt="背景画像">
+{% endif %}
+<h1>
+    <span class="badge badge-pill badge-primary">{{ object.name }}：曲一覧</span>
+    <strong class="d-inline-block mb-2 text-primary">{{ object.song.all.count }}曲</strong>
+</h1>
+<a href="{% url 'artist_list' %}" class="btn btn-primary">アーティスト一覧に戻る</a>
+<a href="{% url 'update_artist' object.pk %}" class="btn btn-primary">アーティスト情報を更新する</a>
+<a class="btn btn-outline-danger" data-toggle="modal" data-target="#testModal">アーティストを削除する</a>
+<div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">削除確認画面</h4>
+            </div>
+            <div class="modal-body">
+                <label>本当に削除しますか？</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                <a href="{% url 'delete_artist' object.pk %}" class="btn btn-danger">削除</a>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="{% url 'add_song' object.pk %}" class="btn btn-primary">曲を追加する</a>
+<hr>
+
+<div class="row mb-2">
+    {% for song in object.song.all %}
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                     aria-label="Placeholder: Thumbnail"><title>Placeholder</title>
+                    {% if song.image %}
+                    <img src="{{ song.image.url }}" height="200">
+                    {% else %}
+                    <img src="{% static 'music.jpeg' %}" alt="背景画像">
+                    {% endif %}
+                </svg>
+            </div>
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">{{ song.name }}</h3>
+                <a href="{% url 'song_detail' song.pk %}" class="stretched-link">曲詳細へ</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

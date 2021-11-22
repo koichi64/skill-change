@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>
+    <span class="badge badge-pill badge-primary">アーティスト一覧</span>
+    <strong class="d-inline-block mb-2 text-primary">{{ object_list.count }} artists</strong>
+</h1>
+<a href="{% url 'add_artist' %}" class="btn btn-primary">アーティストを追加する</a>
+<hr>
+
+<div class="row mb-2">
+    {% for artist in object_list %}
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                     aria-label="Placeholder: Thumbnail"><title>Placeholder</title>
+                    {% if artist.image %}
+                    <img src="{{ artist.image.url }}">
+                    {% else %}
+                    <img src="{% static 'music.jpeg' %}" alt="背景画像">
+                    {% endif %}
+                </svg>
+            </div>
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">{{ artist.name }}</h3>
+                <a href="{% url 'artist_detail' artist.pk %}" class="stretched-link">アーティスト詳細へ</a>
+                <p class="card-text mb-auto">
+                    <span class="badge badge-pill badge-primary">曲一覧</span>
+                    <strong class="d-inline-block mb-2 text-primary">{{ artist.song.all.count }}曲</strong>
+                    {% for song in artist.song.all %}
+                <li>
+                    {{ song.name }}
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

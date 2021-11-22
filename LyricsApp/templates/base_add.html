@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form }}
+    </div>
+    <input type="submit" value="{% block btnvalue %}{% endblock %}">
+</form>
+<br>
+<a href="{% block return %}{% endblock %}" class="btn btn-primary">戻る</a>
+{% endblock %}

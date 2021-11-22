@@ -1,0 +1,4 @@
+{% extends 'base_add.html' %}
+
+{% block btnvalue %}曲を追加する{% endblock %}
+{% block return %}{% url 'artist_detail' view.kwargs.pk %}{% endblock %}

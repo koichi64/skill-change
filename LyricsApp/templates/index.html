@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'flexstyle.css' %}">
+<h1>Index</h1>
+<a href="{% url 'artist_list' %}" class="btn btn-primary">アーティスト一覧へ</a>
+{% for artist in object_list %}
+<hr>
+<div class="flex">
+    <figure class="image">
+        {% if artist.image %}
+        <img src="{{ artist.image.url }}" height="200">
+        {% else %}
+        <img src="{% static 'music.jpeg' %}" alt="背景画像">
+        {% endif %}
+    </figure>
+    <nav class="nav nav-pills flex-column">
+        <h2><a class="nav-link" href="{% url 'artist_detail' artist.pk %}">{{ artist.name }}</a></h2>
+        {% for song in artist.song.all %}
+        <nav class="nav nav-pills flex-column">
+            <h3><a class="nav-link ml-3 my-1" href="{% url 'song_detail' song.pk %}">{{ song.name }}</a></h3>
+        </nav>
+        {% endfor %}
+    </nav>
+</div>
+{% endfor %}
+{% endblock %}

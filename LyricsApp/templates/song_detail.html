@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if object.image %}
+<img src="{{ object.image.url }}" height="200">
+{% else %}
+<img src="{% static 'music.jpeg' %}" alt="背景画像">
+{% endif %}
+<h1>
+    <span class="badge badge-pill badge-primary">{{ object.name }}：歌詞一覧</span>
+    <strong class="d-inline-block mb-2 text-primary">{{ object.lyrics.all.count }}種</strong>
+    <a href="{{ object.movie_url }}">{{ object.movie_url }}</a>
+</h1>
+<a href="{% url 'artist_detail' object.artist.pk %}" class="btn btn-primary">曲一覧に戻る</a>
+<a href="{% url 'update_song' object.pk %}" class="btn btn-primary">曲情報を更新する</a>
+<a class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteSongModal">曲を削除する</a>
+<div class="modal fade" id="deleteSongModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteSongModalLabel">削除確認画面</h4>
+            </div>
+            <div class="modal-body">
+                <label>本当に削除しますか？</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                <a href="{% url 'delete_song' artist_pk=object.artist.pk pk=object.pk %}" class="btn btn-danger">削除</a>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="{% url 'add_lyrics' object.pk %}" class="btn btn-primary">歌詞を追加する</a>
+<hr>
+
+<div class="row mb-2">
+    {% for lyrics in object.lyrics.all %}
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h1 class="mb-0"><strong class="d-inline-block mb-2 text-success">{{ lyrics.name }}</strong></h1>
+                <br>
+                <h3 class="mb-0">{{ lyrics.content | linebreaksbr }}</h3>
+                <a href="{% url 'update_lyrics' song_pk=object.pk pk=lyrics.pk %}" class="btn btn-primary">歌詞情報を更新する</a>
+                <a class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteLyricsModal">歌詞情報を削除する</a>
+                <div class="modal fade" id="deleteLyricsModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="deleteLyricsModalLabel">削除確認画面</h4>
+                            </div>
+                            <div class="modal-body">
+                                <label>本当に削除しますか？</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                                <a href="{% url 'delete_lyrics' song_pk=object.pk pk=lyrics.pk %}"
+                                   class="btn btn-danger">削除</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

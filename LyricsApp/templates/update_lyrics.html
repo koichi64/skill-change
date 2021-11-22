@@ -1,0 +1,4 @@
+{% extends 'base_add.html' %}
+
+{% block btnvalue %}歌詞情報を更新する{% endblock %}
+{% block return %}{% url 'song_detail' view.kwargs.song_pk %}{% endblock %}
